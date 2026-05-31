@@ -1,0 +1,10 @@
+# Core runtime dependencies for NanoJaX-Gpt.
+# Install: pip install -r requirements.txt
+
+jax>=0.4.30
+jaxlib>=0.4.30
+flax>=0.8.0
+optax>=0.2.0
+msgpack>=1.0
+numpy>=1.26
+matplotlib>=3.8

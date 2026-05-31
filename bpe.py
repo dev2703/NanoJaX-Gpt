@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import argparse
 import base64
 import json
 from dataclasses import dataclass
@@ -102,7 +101,6 @@ class BPETrainer:
         return self.vocab, self.merges
 
     def train_from_path(self, path: str | Path) -> tuple[dict[int, bytes], list[tuple[bytes, bytes]]]:
-        """Read a file as raw bytes and run BPE (UTF-8 text files are encoded to bytes)."""
         file_path = Path(path)
         if not file_path.is_file():
             raise FileNotFoundError(f"Input file not found: {file_path}")
@@ -302,68 +300,3 @@ def _encode_bytes(data: bytes) -> str:
 
 def _decode_bytes(data: str) -> bytes:
     return base64.b64decode(data.encode("ascii"))
-
-
-def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Train byte-level BPE on a text file.")
-    parser.add_argument(
-        "input",
-        type=Path,
-        help="Path to the training corpus (read as UTF-8 bytes).",
-    )
-    parser.add_argument(
-        "--vocab-size",
-        type=int,
-        default=512,
-        help="Target vocabulary size (default: 512).",
-    )
-    parser.add_argument(
-        "--special-tokens",
-        nargs="*",
-        default=[],
-        help="Optional special tokens appended after the byte vocab (e.g. <|endoftext|>).",
-    )
-    parser.add_argument(
-        "--output",
-        type=Path,
-        default=None,
-        help="Optional path to save the trained tokenizer as JSON.",
-    )
-    parser.add_argument(
-        "--round-trip",
-        type=str,
-        default=None,
-        help="Optional text to encode/decode after training to verify the tokenizer.",
-    )
-    return parser.parse_args()
-
-
-def main() -> None:
-    args = _parse_args()
-    trainer = BPETrainer(vocab_size=args.vocab_size, special_tokens=args.special_tokens)
-    trainer.train_from_path(args.input)
-    tokenizer = BPETokenizer.from_trainer(trainer)
-
-    print(f"Trained on: {args.input.resolve()}")
-    print(f"Vocab size: {len(tokenizer.vocab)}")
-    print(f"Merges learned: {len(tokenizer.merges)}")
-    if tokenizer.merges:
-        print("Last 5 merges (bytes):")
-        for pair in tokenizer.merges[-5:]:
-            print(f"  {pair[0]!r} + {pair[1]!r}")
-
-    if args.output is not None:
-        tokenizer.save(args.output)
-        print(f"Saved tokenizer to: {args.output.resolve()}")
-
-    if args.round_trip is not None:
-        ids = tokenizer.encode_text(args.round_trip)
-        decoded = tokenizer.decode_text(ids)
-        print(f"Round-trip ids ({len(ids)}): {ids[:20]}{'...' if len(ids) > 20 else ''}")
-        print(f"Round-trip text: {decoded!r}")
-        if decoded != args.round_trip:
-            raise SystemExit("Round-trip check failed: decoded text does not match input.")
-
-
-if __name__ == "__main__":
-    main()
