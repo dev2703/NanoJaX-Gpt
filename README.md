@@ -3,6 +3,7 @@
 A from-scratch GPT-style language model in **JAX / Flax / Optax**, structured like [NanoGPT](https://github.com/karpathy/nanoGPT): a flat repo with a few Python files at the root, hyperparameters in `config.py`, and scripts you run directly. Inspired by Karpathy's NanoGPT and Stanford CS336 Assignment 1.
 
 Byte-level BPE tokenization, pre-norm Transformer blocks (RMSNorm, RoPE, SwiGLU), AdamW training with cosine warmup, and autoregressive sampling.
+<img width="1500" height="750" alt="val_loss_fast_1000" src="https://github.com/user-attachments/assets/9bef4b61-26f2-446c-828d-5e5636247f9c" />
 
 
 ---
