@@ -96,36 +96,6 @@ python plot_metrics.py --metrics out/run_YYYYMMDD_HHMMSS/metrics.json
 
 Checkpoints land in `out/run_*/best` and `out/run_*/last`. Each run saves a copy of `config.py` and `metrics.json`.
 
-### Example val/loss curve
-
-Fast preset on Tiny Shakespeare (`python train_fast.py`), steps 0–1000:
-
-![NanoJaX-Gpt validation loss — steps 0–1000](docs/images/val_loss_fast_1000.png)
-
-To embed any image in Markdown, use a **relative path** from the repo root:
-
-```markdown
-![Alt text for accessibility](docs/images/val_loss_fast_1000.png)
-```
-
-Optional caption or link form:
-
-```markdown
-![val/loss curve](docs/images/val_loss_fast_1000.png)
-<!-- or -->
-[![val/loss](docs/images/val_loss_fast_1000.png)](docs/images/val_loss_fast_1000.png)
-```
-
-Regenerate the plot after training:
-
-```bash
-python plot_metrics.py \
-  --metrics out/fast/run_YYYYMMDD_HHMMSS/metrics.json \
-  --output docs/images/val_loss_fast_1000.png \
-  --val-only --max-step 1000
-```
-
----
 
 ## Configuration
 
@@ -138,50 +108,13 @@ vocab_size = 512
 n_layer = 12
 n_head = 12
 n_embd = 768
-dropout = 0.0
-bias = True
+dropout = 0.0025
+bias = False
 learning_rate = 6e-4
 max_iters = 5000
 ```
 
-Vocab is padded to the nearest multiple of 64 for efficiency. Change any value, then re-run the pipeline.
-
-For a quick smoke test, lower `max_iters`, `n_layer`, and `block_size` in `config.py`.
-
----
-
-## Sampling
-
-```bash
-python sample.py \
-  --checkpoint out/run_YYYYMMDD_HHMMSS/best \
-  --prompt "ROMEO:" \
-  --max-new-tokens 200 \
-  --temperature 0.8 \
-  --top-k 40
-```
-
-| Flag | Default | Meaning |
-|------|---------|---------|
-| `--checkpoint` | (required) | Dir with `state.msgpack` |
-| `--prompt` | `""` | Text prefix |
-| `--tokenizer` | `out/tokenizer.json` | Must match training |
-| `--max-new-tokens` | `100` | Tokens to generate |
-| `--block-size` | from `config.py` | Context window |
-| `--temperature` | `1.0` | Sampling temperature |
-| `--top-k` | `40` | Top-k filtering (`0` = off) |
-
-Use the **`best`** checkpoint (lowest val loss) for generation.
-
----
-
-## Tests
-
-```bash
-pytest
-```
-
----
+Vocab is padded to the nearest multiple of 64 for efficiency. 
 
 ## Troubleshooting
 
@@ -203,7 +136,3 @@ print(jax.devices())
 ```
 
 ---
-
-## License
-
-MIT (see repository).
