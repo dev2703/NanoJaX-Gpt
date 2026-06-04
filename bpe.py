@@ -8,7 +8,7 @@ from typing import Any, Sequence
 
 
 class BPETrainer:
-    DEFAULT_BASE_VOCAB_SIZE = 256
+    DEFAULT_BASE_VOCAB_SIZE = 512
 
     def __init__(
         self,
