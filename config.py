@@ -14,24 +14,17 @@ from pathlib import Path
 
 import jax.numpy as jnp
 
-# ---------------------------------------------------------------------------
-# I/O paths
-# ---------------------------------------------------------------------------
+#Data Loader
 dataset = "Data/input.txt"
 out_dir = "out"
 tokenizer_path = f"{out_dir}/tokenizer.json"
 tokens_path = f"{out_dir}/tokens.bin"
 
-# ---------------------------------------------------------------------------
-# Data / batching
-# ---------------------------------------------------------------------------
+#Hyperparametrs
 block_size = 1024
 batch_size = 32
 val_fraction = 0.1
 
-# ---------------------------------------------------------------------------
-# Model (NanoGPT Shakespeare defaults)
-# ---------------------------------------------------------------------------
 vocab_size = 512
 n_layer = 12
 n_head = 12
@@ -43,9 +36,7 @@ rope_theta = 10000.0
 rms_eps = 1e-5
 vocab_pad_multiple = 64
 
-# ---------------------------------------------------------------------------
-# Optimizer / schedule
-# ---------------------------------------------------------------------------
+#optimizer and LR scheduling
 learning_rate = 6e-4
 max_iters = 5000
 warmup_iters = 200
@@ -55,9 +46,9 @@ beta1 = 0.9
 beta2 = 0.95
 adam_eps = 1e-8
 
-# ---------------------------------------------------------------------------
+
 # Logging / eval
-# ---------------------------------------------------------------------------
+
 eval_interval = 250
 log_interval = 10
 eval_iters = 20
