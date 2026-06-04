@@ -1,12 +1,3 @@
-"""
-Training and model hyperparameters (NanoGPT-style).
-
-Edit values here, then run:
-  python train_tokenizer.py
-  python prepare_data.py
-  python train.py
-"""
-
 from __future__ import annotations
 
 from dataclasses import dataclass
